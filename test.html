@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Welcome</title>
+    <style>
+        /* Full screen styling */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Initial overlay for name input */
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+            z-index: 999; /* On top of everything */
+        }
+
+        .input-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px 0;
+            width: 250px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Content initially blurred */
+        #content {
+            opacity: 0; /* Initially hidden */
+            filter: blur(8px); /* Initial blur */
+            transition: opacity 0.5s ease, filter 0.5s ease; /* Smooth transition */
+        }
+
+        /* Active state removes blur and shows content */
+        #content.active {
+            opacity: 1;
+            filter: blur(0); /* Remove blur */
+        }
+
+        /* Styling for the greeting text */
+        .section__text__p1 {
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay that prompts user for their name -->
+    <div id="overlay" class="blur-overlay">
+        <div class="input-container">
+            <h2>Welcome! Please enter your name:</h2>
+            <input type="text" id="username" placeholder="Enter your name">
+            <button id="submitName">Submit</button>
+        </div>
+    </div>
+
+    <!-- Content that will be blurred initially -->
+    <div id="content">
+        <p class="section__text__p1" id="greeting">Hello, I'm</p>
+    </div>
+
+    <script>
+        var username = '';
+
+        // Function to handle the name submission
+        document.getElementById('submitName').addEventListener('click', function() {
+            username = document.getElementById('username').value.trim();
+            
+            if (username !== "") {
+                // Hide the overlay
+                document.getElementById('overlay').style.display = 'none';
+
+                // Remove blur and show the content
+                document.getElementById('content').classList.add('active');
+
+                // Start the typing effect
+                typeGreeting();
+            } else {
+                alert("Please enter your name.");
+            }
+        });
+
+        // Optional: Pressing Enter to submit the name
+        document.getElementById('username').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('submitName').click();
+            }
+        });
+
+        // Typing effect variables
+        var greetings = [
+            `Hello ${username}, Ako si `, 
+            `Xin chào ${username}, Tôi là `, 
+            `Kumusta ${username}, Ako si `
+        ]; // Array of greetings
+        var currentGreetingIndex = 0; // Track the current greeting
+        var currentCharIndex = 0; // Track the current character being typed
+        var greetingElement = document.getElementById('greeting');
+        var typingSpeed = 150; // Speed of typing
+        var deletingSpeed = 100; // Speed of deleting
+        var delayBetweenSwitch = 1000; // Delay before switching languages
+
+        // Typing effect function
+        function typeGreeting() {
+            // Update greetings array with the current username
+            greetings = [
+                `Hello ${username}, Ako si `, 
+                `Xin chào ${username}, Tôi là `, 
+                `Kumusta ${username}, Ako si `
+            ];
+
+            if (currentCharIndex < greetings[currentGreetingIndex].length) {
+                greetingElement.textContent = greetings[currentGreetingIndex].substring(0, currentCharIndex);
+                currentCharIndex++;
+                setTimeout(typeGreeting, typingSpeed); // Continue typing
+            } else {
+                setTimeout(deleteGreeting, delayBetweenSwitch); // Wait before deleting
+            }
+        }
+
+        // Deleting effect function
+        function deleteGreeting() {
+            if (currentCharIndex > 0) {
+                greetingElement.textContent = greetings[currentGreetingIndex].substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+                setTimeout(deleteGreeting, deletingSpeed); // Continue deleting
+            } else {
+                currentGreetingIndex = (currentGreetingIndex + 1) % greetings.length; // Switch to the next greeting
+                setTimeout(typeGreeting, typingSpeed); // Start typing the next greeting
+            }
+        }
+    </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" type="x-icon" href="./assets/Anle.png">  
+    <link rel="shortcut icon" type="x-icon" href="./assets/3.png">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
@@ -10,7 +10,9 @@
  </head>
  <body>
     <nav id="desktop-nav"> 
-     <div class="logo">An Le</div>
+     <div class="logo">
+        <img src="./assets/3.png" alt="logo" class="logovn">
+     </div>
      <div>
        <ul class="nav-links">
             <li><a href="#about">About</a></li>
@@ -19,9 +21,13 @@
             <li><a href="#contact">Contact</a></li>
        </ul>
      </div>
+     <img src="./assets/1.png" id="iconmoon">
     </nav>
     <nav id="hamburger-nav">
-     <div class="logo">An Le</div>
+     <div class="logo">
+        <img src="./assets/3.png" alt="logo" class="logovn">
+     </div>
+     <img src="./assets/1.png" id="iconmoon1">
      <div class="hamburger-menu">
         <div class="hamburger-icon" onclick="toggleMenu()">
             <span></span>    
@@ -38,10 +44,84 @@
     </nav>
     <section id="profile">
        <div class="section__pic-container">
-           <img src="./assets/profile-pic.png" alt="An Le profile picture">
+           <img src="./assets/profile anle.png" alt="An Le profile picture">
         </div>
         <div class="section__text">
-            <p class="section__text__p1">Hello, I'm</p>
+            <div id="overlay" class="blur-overlay">
+                <div class="input-container">
+                    <h2>Welcome! Please enter your name: 😊</h2>
+                    <input type="text" id="username" placeholder="Enter your name">
+                    <button1 id="submitName">Submit</button1>
+                </div>
+            </div>
+        
+            <div id="content">
+                <p class="section__text__p1" id="greeting">Hello, I'm</p>
+            </div>
+        
+            <script>
+                var username = '';
+        
+                document.getElementById('submitName').addEventListener('click', function() {
+                    username = document.getElementById('username').value.trim();
+                    
+                    if (username !== "") {
+                        document.getElementById('overlay').style.display = 'none';
+        
+                        document.getElementById('content').classList.add('active');
+        
+                        typeGreeting();
+                    } else {
+                        alert("Please enter your name.");
+                    }
+                });
+        
+                document.getElementById('username').addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        document.getElementById('submitName').click();
+                    }
+                });
+        
+                var greetings = [
+                    `Hello ${username}, Ako si`, 
+                    `Xin chào ${username}, Tôi là`, 
+                    `Kumusta ${username}, Ako si`
+                ]; 
+                var currentGreetingIndex = 0; 
+                var currentCharIndex = 0; 
+                var greetingElement = document.getElementById('greeting');
+                var typingSpeed = 150; 
+                var deletingSpeed = 100; 
+                var delayBetweenSwitch = 1000; 
+        
+                function typeGreeting() {
+                    
+                    greetings = [
+                        `Hello ${username}, Ako si `, 
+                        `Xin chào ${username}, Tôi là `, 
+                        `Kumusta ${username}, Ako si `
+                    ];
+        
+                    if (currentCharIndex < greetings[currentGreetingIndex].length) {
+                        greetingElement.textContent = greetings[currentGreetingIndex].substring(0, currentCharIndex);
+                        currentCharIndex++;
+                        setTimeout(typeGreeting, typingSpeed); 
+                    } else {
+                        setTimeout(deleteGreeting, delayBetweenSwitch); 
+                    }
+                }
+        
+                function deleteGreeting() {
+                    if (currentCharIndex > 0) {
+                        greetingElement.textContent = greetings[currentGreetingIndex].substring(0, currentCharIndex - 1);
+                        currentCharIndex--;
+                        setTimeout(deleteGreeting, deletingSpeed); 
+                    } else {
+                        currentGreetingIndex = (currentGreetingIndex + 1) % greetings.length; 
+                        setTimeout(typeGreeting, typingSpeed); 
+                    }
+                }
+            </script>
             <h1 class="title">An Le</h1>
             <p class="section__text__p2">Student</p>
             <div class="btn-container">
@@ -50,9 +130,9 @@
             </div>
             <div id="socials-container">
                 <img src="./assets/linkedin.png" alt="My linkedIn profile" 
-                class="icon" onclick="location.href='https://www.linkedin.com/in/an-nhut-le-76437b326/'">
+                class="icon" onclick="window.open('https://www.linkedin.com/in/an-nhut-le-76437b326/')">
                 <img src="./assets/github.png" alt="My Github profile" 
-                class="icon" onclick="location.href='https://github.com/annhutle'">
+                class="icon" onclick="window.open('https://github.com/annhutle')">
             </div>
         </div>
     </section>
@@ -239,7 +319,6 @@
                 <p><a href="https:linkedin.com/">LinkedIn</a></p>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#profile'">
     </section>
     <footer>
         <nav>
@@ -255,5 +334,55 @@
         <p>Copyright &#169; 2023 An Le. All Rights Reserved</p>
     </footer>
     <script src="script.js"></script>
+    <a href="#" id="scrollToTop" class="scroll-up">
+        <span class="arrow-icon">
+            <img src="./assets/arrow copy.png" alt="Arrow icon" class="icon">
+        </span>
+    </a>
+
+    <script>
+       const scrollButton = document.getElementById("scrollToTop");
+
+        window.addEventListener("scroll", function() {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const currentScroll = window.scrollY;
+
+            if (currentScroll / scrollableHeight > 0.9) {
+                scrollButton.style.display = "block";
+            } else {
+                scrollButton.style.display = "none";
+            }
+        });
+
+        scrollButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script> 
+ <script>
+    function toggleTheme(icon) {
+        document.body.classList.toggle("rainbow-theme");
+
+        if (document.body.classList.contains("rainbow-theme")) {
+            icon.src = "./assets/2.png";
+        } else {
+            icon.src = "./assets/1.png";
+        }
+    }
+
+    // Select both icons
+    var iconmoon = document.getElementById("iconmoon");
+    var iconmoon1 = document.getElementById("iconmoon1");
+
+    // Assign the same toggleTheme function to both buttons
+    iconmoon.onclick = function() {
+        toggleTheme(iconmoon);
+    };
+
+    iconmoon1.onclick = function() {
+        toggleTheme(iconmoon1);
+    };
+</script>
+
  </body>
 </html> 

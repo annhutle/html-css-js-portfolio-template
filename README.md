@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
  
 This is portfolio wesbite template, and I hope you will like it.
 
